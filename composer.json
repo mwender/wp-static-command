@@ -1,0 +1,19 @@
+{
+  "name": "mwender/wp-static-command",
+  "description": "A WP-CLI command for creating a static version of your posts and pages.",
+  "type": "wp-cli-package",
+  "require": {
+    "wp-cli/wp-cli": "^2.5"
+  },
+  "autoload": {
+    "files": ["bin/wp-static.php"]
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Michael Wender",
+      "email": "mwender@wenmarkdigital.com"
+    }
+  ],
+  "version": "1.0.0"
+}
