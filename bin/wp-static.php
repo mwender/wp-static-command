@@ -84,8 +84,14 @@ class Static_Command {
             // Load the post data
             $query->the_post();
 
-            // Include the theme's template loader to render the content
-            include ABSPATH . WPINC . '/template-loader.php';
+            // Attempt to load the template
+            $template = locate_template(['single.php', 'index.php']);
+            if ($template) {
+                WP_CLI::line("Template found: $template");
+                include $template;
+            } else {
+                WP_CLI::warning("No template found for rendering.");
+            }
         } else {
             // Log that the post was not found
             WP_CLI::warning("Post ID $post_id not found.");
