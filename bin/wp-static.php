@@ -67,17 +67,26 @@ class Static_Command {
         // Use output buffering to capture the rendered HTML
         ob_start();
 
-        // Set up the main query for the specified post
-        query_posts(['p' => $post_id, 'post_type' => 'any']);
+        // Set up a new WP_Query for the specified post
+        $query = new WP_Query([
+            'p' => $post_id,
+            'post_type' => 'any',
+        ]);
 
-        // Include the theme's template loader to render the content
-        include ABSPATH . WPINC . '/template-loader.php';
+        // Check if the post exists
+        if ($query->have_posts()) {
+            // Load the post data
+            $query->the_post();
+
+            // Include the theme's template loader to render the content
+            include ABSPATH . WPINC . '/template-loader.php';
+        }
 
         // Get the output and clean up
         $content = ob_get_clean();
 
-        // Reset the query
-        wp_reset_query();
+        // Reset the post data
+        wp_reset_postdata();
 
         return $content;
     }
