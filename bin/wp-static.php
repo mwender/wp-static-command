@@ -64,8 +64,11 @@ class Static_Command {
      * @return string The static HTML content.
      */
     private function get_static_content($post_id) {
-        // Use output buffering to capture the rendered HTML
+        // Start output buffering
         ob_start();
+
+        // Log the post ID being processed
+        WP_CLI::line("Fetching static content for post ID: $post_id");
 
         // Set up a new WP_Query for the specified post
         $query = new WP_Query([
@@ -75,15 +78,24 @@ class Static_Command {
 
         // Check if the post exists
         if ($query->have_posts()) {
+            // Log that the post was found
+            WP_CLI::success("Post ID $post_id found. Rendering content.");
+
             // Load the post data
             $query->the_post();
 
             // Include the theme's template loader to render the content
             include ABSPATH . WPINC . '/template-loader.php';
+        } else {
+            // Log that the post was not found
+            WP_CLI::warning("Post ID $post_id not found.");
         }
 
         // Get the output and clean up
         $content = ob_get_clean();
+
+        // Log the length of the content captured
+        WP_CLI::line("Content length for post ID $post_id: " . strlen($content));
 
         // Reset the post data
         wp_reset_postdata();
