@@ -77,19 +77,19 @@ class Static_Command {
         // Log the post ID being processed
         WP_CLI::line("Fetching static content for post ID: $post_id");
 
-        // Set up a new WP_Query for the specified post
-        $query = new WP_Query([
+        // Use query_posts for debugging
+        query_posts([
             'p' => $post_id,
             'post_type' => 'any',
         ]);
 
         // Check if the post exists
-        if ($query->have_posts()) {
+        if (have_posts()) {
             // Log that the post was found
             WP_CLI::success("Post ID $post_id found. Rendering content.");
 
             // Load the post data
-            $query->the_post();
+            the_post();
 
             // Attempt to load the template
             $template = locate_template(['single.php', 'index.php']);
@@ -114,7 +114,7 @@ class Static_Command {
         WP_CLI::line("Content length for post ID $post_id: " . strlen($content));
 
         // Reset the post data
-        wp_reset_postdata();
+        wp_reset_query();
 
         return $content;
     }
