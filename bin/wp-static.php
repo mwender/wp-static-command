@@ -100,6 +100,9 @@ class Static_Command {
         // Get the output and clean up
         $content = ob_get_clean();
 
+        // Replace http:// with https:// in the content
+        $content = str_replace('http://', 'https://', $content);
+
         // Log the length of the content captured
         WP_CLI::line("Content length for post ID $post_id: " . strlen($content));
 
