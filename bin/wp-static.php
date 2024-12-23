@@ -64,6 +64,13 @@ class Static_Command {
      * @return string The static HTML content.
      */
     private function get_static_content($post_id) {
+        // Set a default SERVER_NAME for CLI context using the siteurl
+        if (php_sapi_name() === 'cli' && !isset($_SERVER['SERVER_NAME'])) {
+            $site_url = get_option('siteurl');
+            $parsed_url = parse_url($site_url);
+            $_SERVER['SERVER_NAME'] = $parsed_url['host'];
+        }
+
         // Start output buffering
         ob_start();
 
